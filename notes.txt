@@ -1,0 +1,42 @@
+backend/
+├── main.py
+├── requirements.txt
+├── config/
+│   ├── config.py
+│   ├── database.py
+│   └── encryption.py
+├── models/
+│   ├── user.py
+│   └── password.py
+├── routes/
+│   ├── auth.py
+│   └── passwords.py
+├── middleware/
+│   ├── auth_middleware.py
+│   └── error_handler_middleware.py
+├── services/
+│   ├── auth_service.py
+│   └── password_service.py
+├── repositories/
+│   ├── user_repository.py
+│   └── password_repository.py
+└── utils/
+    └── validation.py
+
+
+Vamos a desarrollar una aplicación backend en Python que funcione como un gestor de contraseñas completo, con funcionalidades CRUD. Estos son los pasos y requisitos: 
+Operaciones CRUD: Implementaremos los endpoints necesarios para crear, leer, actualizar y eliminar contraseñas. 
+El proyecto debe de estar completamente MODULARIZADO 
+1. **Autenticación y Seguridad**: 
+- Implementaremos un sistema de login usando PyJWT para la autenticación. 
+- Utilizaremos el algoritmo de hasheo de contraseñas Master Password de Maarten Billemont para garantizar la seguridad de las contraseñas. 
+2. **Base de Datos**: 
+- Utilizaremos SQLAlchemy para crear una base de datos local.
+- Esta base de datos guardará la información del usuario y sus datos, donde las contraseñas se guardarán cifradas según el algoritmo de Master Password de Maarten Billemont. 
+3. **Generación de Contraseñas**: 
+- Los usuarios podrán ingresar información como nombre del sitio web, URL, nombre de usuario y preferencias para generar una nueva contraseña. 
+- Se generará una contraseña basada en esta información proporcionada por el usuario, como longitud deseada, combinación de letras, caracteres especiales y números. Alternativamente, se podrá generar una contraseña completamente aleatoria.
+- Posteriormente, la contraseña generada se almacenará en la base de datos asociada al usuario, junto con toda la información adicional ingresada. 
+4. **Funcionalidades Adicionales**: 
+- Los usuarios podrán realizar acciones como cerrar sesión, cambiar su nombre de correo, modificar la contraseña de inicio de sesión y gestionar las contraseñas almacenadas en su "caja fuerte". 
+- Se ofrecerá la posibilidad de actualizar cualquier otra información relevante que deseen modificar.
