@@ -9,6 +9,7 @@ from schemas.user_schemas import userS
 from utils.jwt_manager import create_token
 from fastapi.responses import JSONResponse
 from middlewares.auth_middleware import JWTBearer
+from schemas.user_schemas import userS
 
 auth_router = APIRouter()
 
@@ -31,14 +32,27 @@ def set_user(username: str, email: str, password: str):
       return new_user
 
   except ValueError as e:
+      db.close()
       raise HTTPException(status_code=400, detail=str(e))
+    
+@auth_router.post("/create_user/", response_model=userS, status_code=200)
+def create_user(user_data: userS):
+    """ 
+    print("Received data from frontend:")
+    print("Username:", user_data.username)
+    print("Email:", user_data.email)
+    print("Password:", user_data.password) """
 
-@auth_router.post("/create_user/")
-def create_user(username: str, email: str, password: str):
-  user = set_user(username=username, email=email, password=password)
-  return {"message": "User created successfully", "user_id": user.id}
+    user = set_user(username=user_data.username, email=user_data.email, password=user_data.password)
+    try:
+        return user  # Devolver el objeto 'user' que coincide con el modelo 'userS'
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-@auth_router.post("/login", response_model=dict, status_code=200)
+
+  
+  
+@auth_router.post("/login/", response_model=dict, status_code=200)
 def login(user: userS):
     if validate_identity(user=user, password=user.password):
         token = create_token(data=user.model_dump())

@@ -10,5 +10,4 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     password = Column(String)
-    
     passwords = relationship("Password", back_populates="user")

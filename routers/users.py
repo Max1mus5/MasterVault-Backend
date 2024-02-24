@@ -18,7 +18,7 @@ def hide_password(password: str) -> str:
 
 
 
-@users_router.get("get/",tags=["Users"])
+@users_router.get("/get/",tags=["Users"])
 def get_all_users():
    db = Session()
    users = db.query(User).all()
@@ -28,9 +28,11 @@ def get_all_users():
        for password in user.passwords:
            password.password = hide_password(password.password)
            password.unlock = hide_password(password.unlock)
+   db.close()       
    return users
 
-@users_router.put("update/",tags=["Users"])
+
+@users_router.put("/update/",tags=["Users"])
 def update_my_info(user_id: int, username: str, email: str, current_user: User = Depends(get_current_user),
                     new_password:str = None):
  db = Session()
@@ -65,7 +67,7 @@ def update_my_info(user_id: int, username: str, email: str, current_user: User =
 
 
 
-@users_router.delete("delete/",tags=["Users"])
+@users_router.delete("/delete/",tags=["Users"])
 def delete_user(user_id: int, current_user: User = Depends(get_current_user)):
  db = Session()
  passwords = db.query(Password).filter(Password.user_id == user_id).all()
