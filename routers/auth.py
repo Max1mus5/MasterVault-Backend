@@ -55,7 +55,7 @@ def create_user(user_data: userS):
   
 @auth_router.post("/login/", response_model=dict, status_code=200)
 def login(user: UserLogin):
-    """ print("*****************************************************************************************************************************************************",user,"*********************************************************************************************************************************************************")  """
+    
     if validate_identity(username=user.username, password=user.password):
         token = create_token(data=user.model_dump())
         result = JSONResponse(content={"token": token},

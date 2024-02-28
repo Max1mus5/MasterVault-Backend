@@ -15,13 +15,11 @@ class JWTBearer(HTTPBearer):
         username = data.get('username')
         if not username:
             raise HTTPException(status_code=401, detail="Invalid token")
-        if db.query(User).filter(User.username == data['username']).first():
-            print("OK AUTH MID")
+
+        user = db.query(User).filter(User.username == data['username']).first()
+        if user:
             db.close()
-            return JSONResponse(status_code=200)
+            return user
         
         else:
-            raise HTTPException(status_code=401,
-                                detail="Invalid User")
-
-       
+            raise HTTPException(status_code=401, detail="Invalid User")

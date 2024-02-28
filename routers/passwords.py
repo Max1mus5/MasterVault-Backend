@@ -46,19 +46,17 @@ async def create_password(
 
 @password_router.get("/get", tags=["Passwords"])
 async def get_passwords(
- current_user: User = Depends(get_current_user),
- password_service: PasswordService = Depends(),
+    current_user: User = Depends(get_current_user),  
+    password_service: PasswordService = Depends() 
 ):
- try:
-     if not validate_identity(current_user.username, current_user.password):
-         raise HTTPException(status_code=401, detail="Invalid credentials")
-
-     password_response = password_service.get_passwords(user_id=current_user.id)
-
-     return password_response
-     
- except HTTPException as e:
-     raise HTTPException(status_code=e.status_code, detail=str(e.detail))
+    try:
+        """         print("**************************************************************current_user", current_user.username)
+        """        
+        password_response = password_service.get_passwords(user_id=current_user.id)
+        print
+        return password_response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error")
 
 
 @password_router.put("/update", tags=["Passwords"])
