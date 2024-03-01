@@ -38,45 +38,44 @@ class PasswordService:
     
     
 
-    def update_password(self, password_id: int, user_id: int, url: str, title: str, length: int, min_uppercase: int, min_lowercase: int, min_numbers: int, min_special_chars: int) -> dict:
-        
+    def update_password(self, password_id: int, url: str, title: str, length: int, min_uppercase: int, min_lowercase: int, min_numbers: int, min_special_chars: int) -> dict:
         try:
             db = Session()
-            password = db.query(Password).filter(Password.id == password_id, Password.user_id == user_id).first()
-            user = db.query(User).filter(User.id == user_id).first()
+        
 
-            if password is None:
-                db.close()
-                raise HTTPException(status_code=404, detail="Password not found")
+            if length == 0 or length is None:
+                #conserva la contraseña
+                 stmt = (
+                    update(Password)
+                    .where(Password.id == password_id)
+                    .values(title=title, URL=url)
+                )
+            else:
+                passwordSoli = self.generate_password(
+                    length,
+                    min_uppercase,
+                    min_lowercase,
+                    min_numbers,
+                    min_special_chars
+                )
+                hidepass = encrypt_password(passwordSoli)
+                # Actualiza la contraseña existente con la nueva generada
+                stmt = (
+                    update(Password)
+                    .where(Password.id == password_id)
+                    .values(title=title, URL=url, password=hidepass['encrypted_password'], unlock=hidepass['clave'])
+                )
 
-            if password.user_id != user_id:
-                db.close()
-                raise HTTPException(status_code=401, detail="Invalid credentials")
-
-            passwordSoli = self.generate_password(
-            length,
-            min_uppercase,
-            min_lowercase,
-            min_numbers,
-            min_special_chars
-                            )
-            hidepass= encrypt_password(passwordSoli)
-
-            # Actualiza la contraseña existente
-            stmt = (
-                update(Password)
-                .where(Password.id == password_id)
-                .values(title=title, username=user.username, URL=url, password=hidepass['encrypted_password'], unlock=hidepass['clave'])
-            )
             db.execute(stmt)
             db.commit()
             db.close()
 
-            return {"password": hidepass}, {"message": "Password successfully updated in the database."}
+            return {"message": "Password successfully updated in the database."}
 
         except Exception as e:
             db.close()
             raise HTTPException(status_code=400, detail=str(e))
+
         
 
 
@@ -139,12 +138,11 @@ class PasswordService:
             db.close()
             raise HTTPException(status_code=400, detail=str(e))
 
-    def delete_password(self, user_id:int, password_id:int):
+    def delete_password(self, password_id:int)-> dict:
        
         try:
             db = Session()
-            password = db.query(Password).filter(Password.id == password_id, Password.user_id == user_id).first()
-            user = db.query(User).filter(User.id == user_id).first()
+            password = db.query(Password).filter(Password.id == password_id).first()
             if password is None:
                 raise HTTPException(status_code=404, detail="Password not found")
             
@@ -152,7 +150,7 @@ class PasswordService:
             db.commit()
             db.close()
 
-            return {"message": f"Password {password_id} successfully deleted from the {user.username} database."}
+            return {"message": f"Password {password_id} successfully deleted from the database."}
 
         except Exception as e:
             db.close()
