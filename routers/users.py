@@ -68,7 +68,7 @@ def update_my_info(user_id: int, username: str, email: str, current_user: User =
 
 
 @users_router.delete("/delete/",tags=["Users"])
-def delete_user(user_id: int, current_user: User = Depends(get_current_user)):
+def delete_user(user_id: int):
  db = Session()
  passwords = db.query(Password).filter(Password.user_id == user_id).all()
  user = db.query(User).filter(User.id == user_id).first()
