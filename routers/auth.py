@@ -38,11 +38,10 @@ def set_user(username: str, email: str, password: str):
     
 @auth_router.post("/create_user/", response_model=userS, status_code=200)
 def create_user(user_data: userS):
-    """ 
     print("Received data from frontend:")
     print("Username:", user_data.username)
     print("Email:", user_data.email)
-    print("Password:", user_data.password) """
+    print("Password:", user_data.password)  
 
     user = set_user(username=user_data.username, email=user_data.email, password=user_data.password)
     try:

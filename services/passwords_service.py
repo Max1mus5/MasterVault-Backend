@@ -141,6 +141,7 @@ class PasswordService:
     def delete_password(self, password_id:int)-> dict:
        
         try:
+            
             db = Session()
             password = db.query(Password).filter(Password.id == password_id).first()
             if password is None:

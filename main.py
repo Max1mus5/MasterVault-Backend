@@ -10,12 +10,10 @@ app = FastAPI()
 app.title = "Password Manager BACK"
 app.version = "1.0"
 
-# Configuración de CORS
+
 origins = [
-    "http://localhost:3000",  
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:8000/user/create_user/"
-    "http://localhost:8000/user/create_user/",
+  "http://localhost:3000"
+
 ]
 
 app.add_middleware(
