@@ -12,7 +12,8 @@ app.version = "1.0"
 
 
 origins = [
-  "http://localhost:3000"
+  "http://localhost:3000",
+  "https://mastervault.vercel.app"
 
 ]
 
