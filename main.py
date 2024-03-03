@@ -13,8 +13,8 @@ app.version = "1.0"
 
 origins = [
   "http://localhost:3000",
-  "https://mastervault.vercel.app"
-
+  "https://mastervault.vercel.app",
+  "https://mastervault-aaozxopju-max1mus5.vercel.app"
 ]
 
 app.add_middleware(
