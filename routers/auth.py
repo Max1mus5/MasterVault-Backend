@@ -18,14 +18,25 @@ def set_user(username: str, email: str, password: str):
   db = Session()
   try:
       if not validate_username(username):
-       raise ValueError("Invalid username")
+        raise ValueError("Invalid username")
       if not validate_email(email):
-          raise ValueError("Invalid email")
+        raise ValueError("Invalid email")
       if not validate_password(password):
-          raise ValueError("Invalid password")
+        raise ValueError("Invalid password")
 
       hashed_password = user_password(password)
       new_user = User(username=username, email=email, password=hashed_password)
+      existing_user = db.query(User).filter(
+          (User.username == username) | (User.email == email)
+      ).first()
+
+      if existing_user:
+         if existing_user:
+            if existing_user.username == username:
+                raise ValueError("Username already exists")
+            else:
+                raise ValueError("Email already exists")
+      
       db.add(new_user)
       db.commit()
       db.refresh(new_user)
@@ -34,6 +45,7 @@ def set_user(username: str, email: str, password: str):
 
   except ValueError as e:
       db.close()
+      print('**********************************************************************************************',e)
       raise HTTPException(status_code=400, detail=str(e))
     
 @auth_router.post("/create_user/", response_model=userS, status_code=200)
