@@ -59,7 +59,7 @@ backend/
 
 Para ejecutar el proyecto, sigue estos pasos:
 
-1. Clona este repositorio: `git clone https://github.com/tu_usuario/nombre_del_repositorio.git`
+1. Clona este repositorio
 2. Instala las dependencias: `pip install -r requirements.txt`
 3. Ejecuta la aplicación: `uvicorn main:app --reload`
 
